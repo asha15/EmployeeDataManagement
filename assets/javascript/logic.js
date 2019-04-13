@@ -1,18 +1,24 @@
 $(document).ready(function() {
 
-    // var config = {
-    //     apiKey: "AIzaSyDyFP5cJLmwbxt50gME2tPKBxHdhygNZjw",
-    //     authDomain: "employeedatamanagement-a98d1.firebaseapp.com",
-    //     databaseURL: "https://employeedatamanagement-a98d1.firebaseio.com",
-    //     projectId: "employeedatamanagement-a98d1",
-    //     storageBucket: "employeedatamanagement-a98d1.appspot.com",
-    //     messagingSenderId: "284155295511"
-    //   };
-      
-    // firebase.initializeApp(config);
+    var config = {
+        apiKey: "AIzaSyDY391togw25JidPHdJC7URNuyemXVzvTs",
+        authDomain: "testinfirebase-ea98f.firebaseapp.com",
+        databaseURL: "https://testinfirebase-ea98f.firebaseio.com",
+        projectId: "testinfirebase-ea98f",
+        storageBucket: "testinfirebase-ea98f.appspot.com",
+        messagingSenderId: "446453989626"
+      };
+      firebase.initializeApp(config);
 
-    // var database = firebase.database();
-
+    var database = firebase.database();
+    var newEmployee = "";
+    var monw;
+    var totbill;
+    var name;
+    var role;
+    var stdate;
+    var monr;
+    
     $("button").on("click", function(){
 
         event.preventDefault();
@@ -34,7 +40,17 @@ $(document).ready(function() {
         console.log(stdate);
         console.log(monr);
 
-        var newEmployee = `
+
+        database.ref().push({
+            name: name,
+            role: role,
+            stdate: stdate,
+            monr: monr
+        });
+
+    });
+
+    newEmployee = `
             <tr>
             <td>${name}</td>
             <td>${role}</td>
@@ -44,6 +60,20 @@ $(document).ready(function() {
             <td>${totbill}</td>
             </tr>
             `
+
+    //var name;
+    //var newRole;
+    //var newDate;
+    //var newMonth;
+
+    
+
+    database.ref().on("child_added", function(snapshot){
+
+        newName = snapshot.val().name;
+        newRole = snapshot.val().role;
+        newDate = snapshot.val().stdate;
+        newMonth = snapshot.val().monr;
 
         $("table").append(newEmployee);
 
