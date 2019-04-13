@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
 
     // var config = {
     //     apiKey: "AIzaSyDyFP5cJLmwbxt50gME2tPKBxHdhygNZjw",
@@ -19,8 +19,15 @@ $(document).ready(function(){
 
         name = $("#frm_name").val();
         role = $("#frm_role").val();
-        stdate = $("#frm_date").val();
+        stdate = moment(($("#frm_date").val()), "YYYY-MM-DD");
         monr = parseInt($("#frm_rate").val());
+
+        months = moment();
+
+        monw = parseInt(months.diff(stdate, "months"));
+
+        totbill = monr * monw;
+
 
         console.log(name);
         console.log(role);
@@ -32,9 +39,9 @@ $(document).ready(function(){
             <td>${name}</td>
             <td>${role}</td>
             <td>${stdate}</td>
-            <td>months</td>
+            <td>${monw}</td>
             <td>${monr}</td>
-            <td>total</td>
+            <td>${totbill}</td>
             </tr>
             `
 
