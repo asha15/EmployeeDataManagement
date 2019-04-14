@@ -18,6 +18,7 @@ $(document).ready(function() {
     var role;
     var stdate;
     var monr;
+    var months = moment();
     
     $("button").on("click", function(){
 
@@ -25,20 +26,22 @@ $(document).ready(function() {
 
         name = $("#frm_name").val();
         role = $("#frm_role").val();
-        stdate = moment(($("#frm_date").val()), "YYYY-MM-DD");
-        monr = parseInt($("#frm_rate").val());
+        // stdate = moment(($("#frm_date").val()), "YYYY-MM-DD");
+        stdate = $("#frm_date").val();
+        monr = $("#frm_rate").val();
+        // totmon = moment(stdate, "YYYY-MM-DD");
 
-        months = moment();
+        // months = moment();
 
-        monw = parseInt(months.diff(stdate, "months"));
+        // monw = parseInt(months.diff(stdate, "months"));
 
-        totbill = monr * monw;
+        // totbill = monr * monw;
 
 
-        console.log(name);
-        console.log(role);
-        console.log(stdate);
-        console.log(monr);
+        // console.log(name);
+        // console.log(role);
+        // console.log(stdate);
+        // console.log(monr);
 
 
         database.ref().push({
@@ -50,30 +53,42 @@ $(document).ready(function() {
 
     });
 
-    newEmployee = `
-            <tr>
-            <td>${name}</td>
-            <td>${role}</td>
-            <td>${stdate}</td>
-            <td>${monw}</td>
-            <td>${monr}</td>
-            <td>${totbill}</td>
-            </tr>
-            `
+    
 
     //var name;
     //var newRole;
     //var newDate;
     //var newMonth;
 
-    
+    var totmon;
 
     database.ref().on("child_added", function(snapshot){
 
-        newName = snapshot.val().name;
-        newRole = snapshot.val().role;
-        newDate = snapshot.val().stdate;
-        newMonth = snapshot.val().monr;
+        name = snapshot.val().name;
+        role = snapshot.val().role;
+        stdate = parseInt(snapshot.val().stdate);
+        monr = parseInt(snapshot.val().monr);
+
+        totmon = moment(stdate, "YYYYMMDD").format('MM DD YYYY');
+        monw = parseInt(months.diff(totmon, "months"));
+
+        // moment("20111031", "YYYYMMDD").fromNow();
+
+        console.log(stdate);
+        console.log(totmon);
+
+        totbill = monr * monw;
+
+        newEmployee = `
+            <tr>
+            <td>${name}</td>
+            <td>${role}</td>
+            <td>${totmon}</td>
+            <td>${monw}</td>
+            <td>${monr}</td>
+            <td>${totbill}</td>
+            </tr>
+            `
 
         $("table").append(newEmployee);
 
