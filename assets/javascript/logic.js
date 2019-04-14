@@ -12,36 +12,23 @@ $(document).ready(function() {
 
     var database = firebase.database();
     var newEmployee = "";
-    var monw;
     var totbill;
     var name;
     var role;
     var stdate;
     var monr;
-    var months = moment();
-    
+   
     $("button").on("click", function(){
 
         event.preventDefault();
 
         name = $("#frm_name").val();
         role = $("#frm_role").val();
-        // stdate = moment(($("#frm_date").val()), "YYYY-MM-DD");
-        stdate = $("#frm_date").val();
+
+        stdate = moment($("#frm_date").val().trim(), "MM/DD/YYYY").format("X");
+
+
         monr = $("#frm_rate").val();
-        // totmon = moment(stdate, "YYYY-MM-DD");
-
-        // months = moment();
-
-        // monw = parseInt(months.diff(stdate, "months"));
-
-        // totbill = monr * monw;
-
-
-        // console.log(name);
-        // console.log(role);
-        // console.log(stdate);
-        // console.log(monr);
 
 
         database.ref().push({
@@ -51,31 +38,25 @@ $(document).ready(function() {
             monr: monr
         });
 
+
+        $("#frm_name").val("");
+        $("#frm_role").val("");
+        $("#frm_date").val("");
+        $("#frm_rate").val("");
+
     });
 
-    
 
-    //var name;
-    //var newRole;
-    //var newDate;
-    //var newMonth;
-
-    var totmon;
 
     database.ref().on("child_added", function(snapshot){
 
         name = snapshot.val().name;
         role = snapshot.val().role;
-        stdate = parseInt(snapshot.val().stdate);
-        monr = parseInt(snapshot.val().monr);
+        stdate = snapshot.val().stdate;
+        monr = snapshot.val().monr;
 
-        totmon = moment(stdate, "YYYYMMDD").format('MM DD YYYY');
-        monw = parseInt(months.diff(totmon, "months"));
-
-        // moment("20111031", "YYYYMMDD").fromNow();
-
-        console.log(stdate);
-        console.log(totmon);
+        var empStartPretty = moment.unix(stdate).format("MM/DD/YYYY");
+        var monw = moment().diff(moment(stdate, "X"), "months");
 
         totbill = monr * monw;
 
@@ -83,7 +64,7 @@ $(document).ready(function() {
             <tr>
             <td>${name}</td>
             <td>${role}</td>
-            <td>${totmon}</td>
+            <td>${empStartPretty}</td>
             <td>${monw}</td>
             <td>${monr}</td>
             <td>${totbill}</td>
